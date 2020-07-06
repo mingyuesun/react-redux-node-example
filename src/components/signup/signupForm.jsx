@@ -1,7 +1,7 @@
 import React from 'react'
 import classnames from 'classnames'
 
-export default class SignForm extends React.Component {
+export default class SignupForm extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -10,7 +10,8 @@ export default class SignForm extends React.Component {
 			password: "",
 			confirmPassword: "",
 			errors: {},
-			loading: false
+			loading: false,
+			isInValid: false
 		}
 	}
 
@@ -42,11 +43,30 @@ export default class SignForm extends React.Component {
 				this.setState({ errors: response.data, isLoading: false })
 			}
 		)
-		// console.log(this.state)
+	}
+
+	checkUserExicts = (e) => {
+		let val = e.target.value
+		let field = e.target.name
+		if (val.trim()!=="") {
+			this.props.signupActions.isUserExictsRequest(val).then(
+				(res) => {
+					let { errors, isInValid } = this.state
+					if (res.data[0]) {
+						errors[field] = `用户名已存在：${val}`
+						isInValid = true
+					} else {
+						errors[field] = ""
+						isInValid = false
+					}
+					this.setState({errors, isInValid})
+				}
+			)
+		}
 	}
 
 	render () {
-		const { errors, isLoading, username, email, password, confirmPassword } = this.state
+		const { errors, isLoading, username, email, password, confirmPassword, isInValid } = this.state
 		return (
 			<form onSubmit={this.onSubmit}>
 				<h1>Join our community</h1>
@@ -58,6 +78,7 @@ export default class SignForm extends React.Component {
 						name="username" 
 						value={username} 
 						onChange={this.onChange} 
+						onBlur={this.checkUserExicts}
 						className={classnames("form-control", {'is-invalid':errors.username})}
 					/>
 					{errors.username && <span className="form-text text-muted">{errors.username}</span>}
@@ -100,7 +121,7 @@ export default class SignForm extends React.Component {
 				</div>
 
 				<div className="form-group">
-					<button disabled={isLoading} className="btn btn-primary btn-lg">注册</button>
+					<button disabled={isLoading || isInValid} className="btn btn-primary btn-lg">注册</button>
 				</div>
 			</form>
 		)

@@ -1,17 +1,17 @@
 import React from 'react'
-import SignupForm from './signupForm'
+import LoginForm from './loginForm'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import * as signupActions from '../../actions/signupActions'
+import * as loginActions from '../../actions/loginActions'
 import * as flashMessageActions from '../../actions/flashMessageActions'
 
-class SignUp extends React.Component {
+class Login extends React.Component {
 	render(){
 		return (
 			<div className="row">
 				<div className="col-md-3"></div>
 				<div className="col-md-6">
-				  <SignupForm {...this.props} />
+				  <LoginForm {...this.props} />
 				</div>
 				<div className="col-md-9"></div>
 			</div>
@@ -21,9 +21,9 @@ class SignUp extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		signupActions: bindActionCreators(signupActions, dispatch),
+		loginActions: bindActionCreators(loginActions, dispatch),
 		flashMessageActions: bindActionCreators(flashMessageActions, dispatch)
 	}
 }
 
-export default connect(null, mapDispatchToProps)(SignUp)
+export default connect(null, mapDispatchToProps)(Login)
