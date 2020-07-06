@@ -9,6 +9,7 @@ import rootReducers from './reducers'
 import { BrowserRouter as Router } from 'react-router-dom'
 import routers from './router.js'
 import Navigation from './components/navigation'
+import FlashMessagesList from './components/flashMessage/flashMessagesList'
 
 const store = createStore(rootReducers, composeWithDevTools(applyMiddleware(logger, thunk)))
 
@@ -16,6 +17,7 @@ ReactDOM.render(
     <Provider store={store}>
       <Router routes={routers}>
         <Navigation/>
+        <FlashMessagesList/>
          {routers}
       </Router>
     </Provider>
